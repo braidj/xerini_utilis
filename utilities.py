@@ -46,6 +46,28 @@ class MyLogger:
         with open('debug.log', 'w',encoding='UTF-8'):
             pass
 
+def check_csv_folder_exists(file_path,create,logger):
+    """
+    Checks if the file folder path exists and creates it if not
+    Expects the full file path and the boolean create
+    If True will simply create if required
+    If False will exit with error if folder not present
+    """
+    logger.debug('check_csv_folder_exists received: %s',locals())
+
+    directory_path = os.path.dirname(file_path)
+
+    if not os.path.exists(directory_path):
+        if create:
+            os.makedirs(directory_path)
+            logger.info('Had to created directory %s', directory_path)
+        else:
+            logger.error('Directory %s does not exist', directory_path)
+            sys.exit(1)
+    else:
+        logger.debug('Directory %s exists', directory_path)
+
+
 def csv_count_rows(folder_path,file_name,logger):
     """
     Counts the number of rows in a csv file
